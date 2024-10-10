@@ -50,7 +50,6 @@ export default function ForgotPassword({
             />
           </div>
           <Button
-            variant="slim"
             type="submit"
             className="mt-1"
             loading={isSubmitting}
@@ -61,19 +60,19 @@ export default function ForgotPassword({
         </div>
       </form>
       <p>
-        <Link href="/signin/password_signin" className="font-light text-sm">
+        <Link href="/signin/password_signin" className="text-sm font-light">
           Sign in with email and password
         </Link>
       </p>
       {allowEmail && (
         <p>
-          <Link href="/signin/email_signin" className="font-light text-sm">
+          <Link href="/signin/email_signin" className="text-sm font-light">
             Sign in via magic link
           </Link>
         </p>
       )}
       <p>
-        <Link href="/signin/signup" className="font-light text-sm">
+        <Link href="/signin/signup" className="text-sm font-light">
           Don't have an account? Sign up
         </Link>
       </p>

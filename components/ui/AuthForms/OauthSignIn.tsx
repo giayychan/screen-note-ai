@@ -17,7 +17,7 @@ export default function OauthSignIn() {
     {
       name: 'github',
       displayName: 'GitHub',
-      icon: <Github className="h-5 w-5" />
+      icon: <Github className="w-5 h-5" />
     }
     /* Add desired OAuth providers here */
   ];
@@ -38,12 +38,7 @@ export default function OauthSignIn() {
           onSubmit={(e) => handleSubmit(e)}
         >
           <input type="hidden" name="provider" value={provider.name} />
-          <Button
-            variant="slim"
-            type="submit"
-            className="w-full"
-            loading={isSubmitting}
-          >
+          <Button type="submit" className="w-full" loading={isSubmitting}>
             <span className="mr-2">{provider.icon}</span>
             <span>{provider.displayName}</span>
           </Button>

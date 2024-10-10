@@ -36,12 +36,7 @@ export default function EmailForm({
           <p className="pb-4 sm:pb-0">
             We will email you to verify the change.
           </p>
-          <Button
-            variant="slim"
-            type="submit"
-            form="emailForm"
-            loading={isSubmitting}
-          >
+          <Button type="submit" form="emailForm" loading={isSubmitting}>
             Update Email
           </Button>
         </div>

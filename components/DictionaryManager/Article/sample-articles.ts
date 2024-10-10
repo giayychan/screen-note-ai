@@ -1,0 +1,1 @@
+export const testArticle = 'hello';

@@ -1,5 +1,7 @@
 'use client';
 
+import type React from 'react';
+
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { signInWithEmail } from '@/utils/auth-helpers/server';
@@ -50,7 +52,6 @@ export default function EmailSignIn({
             />
           </div>
           <Button
-            variant="slim"
             type="submit"
             className="mt-1"
             loading={isSubmitting}
@@ -63,12 +64,12 @@ export default function EmailSignIn({
       {allowPassword && (
         <>
           <p>
-            <Link href="/signin/password_signin" className="font-light text-sm">
+            <Link href="/signin/password_signin" className="text-sm font-light">
               Sign in with email and password
             </Link>
           </p>
           <p>
-            <Link href="/signin/signup" className="font-light text-sm">
+            <Link href="/signin/signup" className="text-sm font-light">
               Don't have an account? Sign up
             </Link>
           </p>

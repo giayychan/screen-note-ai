@@ -5,6 +5,7 @@ import {
   getSubscription,
   getUser
 } from '@/utils/supabase/queries';
+import { DictionaryManager } from '@/components/DictionaryManager';
 
 export default async function PricingPage() {
   const supabase = createClient();
@@ -15,10 +16,13 @@ export default async function PricingPage() {
   ]);
 
   return (
-    <Pricing
-      user={user}
-      products={products ?? []}
-      subscription={subscription}
-    />
+    <main className="flex flex-col items-center">
+      <DictionaryManager user={user} />
+    </main>
+    // <Pricing
+    //   user={user}
+    //   products={products ?? []}
+    //   subscription={subscription}
+    // />
   );
 }
