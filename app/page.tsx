@@ -7,6 +7,7 @@ import {
 } from '@/utils/supabase/queries';
 import { DictionaryManager } from '@/components/DictionaryManager';
 import { ScreenshotPage } from '@/components/Screenshot';
+import Divider from '@/components/ui/Divider';
 
 export default async function PricingPage() {
   const supabase = createClient();
@@ -19,7 +20,7 @@ export default async function PricingPage() {
   return (
     <main className="flex flex-row min-h-screen border-t-2 justify-evenly">
       <ScreenshotPage />
-      <div className="w-0.5 h-auto bg-black bg-opacity-10"></div>
+      <Divider />
       <DictionaryManager user={user} />
     </main>
     // <Pricing

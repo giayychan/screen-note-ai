@@ -1,102 +1,50 @@
 'use client';
 
-import { type ChangeEvent, useEffect, useState, type FormEvent } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
+import { useOcr, useScreenshot } from './hooks';
 import { UrlInput } from './UrlInput';
-import {
-  fetchScreenshot,
-  extractTextFromImage,
-  SCREENSHOT_WIDTH_PERCENTAGE
-} from './utils';
-import { Progress as ProgressBar } from '@/components/ui/progress';
+import LoadingImageOverlay from '../ui/LoadingImageOverlay';
 import { WordOverlay } from './WordOverlay';
-import useScreenshotStore, { type OcrWord } from '@/store/useScreenshotStore';
-
-const LoadingOverlay = ({ progress }: { progress: number }) => {
-  return (
-    <div
-      className={`absolute bottom-0 w-full backdrop-blur-3xl`}
-      style={{ height: `calc(${100 - progress}%)` }}
-    ></div>
-  );
-};
+import LoadingSection from './LoadingSection';
 
 export default function ScreenshotPage() {
-  const base64Image = useScreenshotStore((state) => state.base64Image);
-  const setBase64Image = useScreenshotStore((state) => state.setBase64Image);
-
-  const url = useScreenshotStore((state) => state.url);
-  const setUrl = useScreenshotStore((state) => state.setUrl);
-
-  const [ocrWords, setOcrWords] = useState<OcrWord[]>();
-
-  const [loadingScreenshot, setLoadingScreenshot] = useState(false);
-  const [loadingTexts, setLoadingTexts] = useState(false);
-  const [progress, setProgress] = useState(0);
-
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const fetchOcrWords = async () => {
-    try {
-      setLoadingTexts(true);
-      const ocrData = await extractTextFromImage(
-        base64Image,
-        setProgress,
-        dimensions
-      );
+  const {
+    base64Image,
+    loading: loadingScreenshot,
+    fetchImage,
+    url,
+    setUrl
+  } = useScreenshot();
 
-      setOcrWords(ocrData);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoadingTexts(false);
-    }
-  };
+  const {
+    ocrWords,
+    loading: loadingTexts,
+    progress,
+    setProgress,
+    setOcrWords
+  } = useOcr(base64Image, dimensions);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setProgress(0);
-    setLoadingScreenshot(true);
-    setOcrWords([]);
+    setOcrWords(undefined);
 
     const formData = new FormData(event.currentTarget);
     const url = formData.get('url')?.toString() || '';
     setUrl(url);
+    await fetchImage(url);
+  };
 
-    try {
-      const imageWidth = window?.innerWidth * SCREENSHOT_WIDTH_PERCENTAGE;
-      const base64Image = await fetchScreenshot(url, imageWidth);
-      setBase64Image(base64Image || '');
-      setLoadingScreenshot(false);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoadingScreenshot(false);
-    }
+  const handleImageLoad = (e: ChangeEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    setDimensions({ width: naturalWidth, height: naturalHeight });
   };
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
   };
-
-  const handleImageLoad = (e: ChangeEvent<HTMLImageElement>) => {
-    const { naturalWidth, naturalHeight } = e.target;
-
-    setDimensions({
-      width: naturalWidth,
-      height: naturalHeight
-    });
-  };
-
-  useEffect(() => {
-    if (
-      base64Image &&
-      !ocrWords?.length &&
-      dimensions.height &&
-      dimensions.width
-    ) {
-      fetchOcrWords();
-    }
-  }, [base64Image, ocrWords, dimensions]);
 
   return (
     <div className="flex flex-col items-center" style={{ width: '60vw' }}>
@@ -109,15 +57,10 @@ export default function ScreenshotPage() {
         />
         <div>
           {(loadingScreenshot || loadingTexts) && (
-            <div className="flex flex-col items-center justify-center gap-2">
-              <p className="flex items-center gap-2">
-                {loadingScreenshot
-                  ? 'Taking a screenshot...'
-                  : 'Analyzing texts in screenshot... It might take a few minutes.'}{' '}
-                <span className="inline-block w-5 h-5 border-2 border-blue-500 rounded-full animate-spin border-t-transparent" />
-              </p>
-              <ProgressBar value={progress} className="rounded-none" />
-            </div>
+            <LoadingSection
+              progress={progress}
+              loadingScreenshot={loadingScreenshot}
+            />
           )}
           {base64Image && (
             <div className="relative">
@@ -127,11 +70,11 @@ export default function ScreenshotPage() {
                 className="w-full"
                 onLoad={handleImageLoad}
               />
-              {progress !== 100 ? (
-                <LoadingOverlay progress={progress} />
-              ) : ocrWords?.length ? (
+              {progress !== 100 || !ocrWords ? (
+                <LoadingImageOverlay progress={progress} />
+              ) : (
                 <WordOverlay words={ocrWords} />
-              ) : null}
+              )}
             </div>
           )}
         </div>
