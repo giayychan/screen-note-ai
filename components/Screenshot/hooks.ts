@@ -1,11 +1,11 @@
-import type { OcrWord } from '@/store/useScreenshotStore';
+import type { OcrWord } from '@/stores/useScreenshotStore';
 import { useEffect, useState } from 'react';
 import {
   extractTextFromImage,
   fetchScreenshot,
   SCREENSHOT_WIDTH_PERCENTAGE
 } from './utils';
-import useScreenshotStore from '@/store/useScreenshotStore';
+import useScreenshotStore from '@/stores/useScreenshotStore';
 
 export function useScreenshot() {
   const [loading, setLoading] = useState(false);

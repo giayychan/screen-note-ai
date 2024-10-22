@@ -2,7 +2,7 @@
 
 import type { User } from '@supabase/supabase-js';
 import { WordList } from './WordList';
-import useWordsStore from '@/store/useWordsStore';
+import useWordsStore from '@/stores/useWordsStore';
 
 type DictionaryManagerProps = {
   user: User | null;

@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import type { WordDefinition, WordsState } from '@/store/useWordsStore';
+import type { WordDefinition, WordsState } from '@/stores/useWordsStore';
 
 type WordCardsProps = {
   words: WordDefinition[];

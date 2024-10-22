@@ -1,8 +1,8 @@
 import { useState, memo } from 'react';
 import Button from '../ui/Button';
-import useWordsStore from '@/store/useWordsStore';
+import useWordsStore from '@/stores/useWordsStore';
 import { nanoid } from 'nanoid';
-import { OcrWord } from '@/store/useScreenshotStore';
+import { OcrWord } from '@/stores/useScreenshotStore';
 
 interface WordOverlayProps {
   words: OcrWord[];

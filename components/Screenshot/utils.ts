@@ -1,4 +1,4 @@
-import { OcrWord } from '@/store/useScreenshotStore';
+import { OcrWord } from '@/stores/useScreenshotStore';
 import { recognize } from 'tesseract.js';
 
 export const SCREENSHOT_WIDTH_PERCENTAGE = 60 / 100;

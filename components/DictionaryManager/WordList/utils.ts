@@ -1,3 +1,4 @@
+// todo: clean up if it is not used
 export function getSubDirectory(baseFilename: string) {
   if (baseFilename.startsWith('bix')) {
     return 'bix';

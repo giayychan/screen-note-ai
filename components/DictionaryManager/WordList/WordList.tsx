@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import WordListActions from './WordListActions';
 import WordCards from './WordCards';
 import { User } from '@supabase/supabase-js';
-import type { WordDefinition } from '@/store/useWordsStore';
-import useWordsStore from '@/store/useWordsStore';
+import type { WordDefinition } from '@/stores/useWordsStore';
+import useWordsStore from '@/stores/useWordsStore';
 
 type WordListProps = {
   words: WordDefinition[];
