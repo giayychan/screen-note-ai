@@ -5,6 +5,7 @@ import { API_CONFIG } from './config';
 
 const { BASE_DICTIONARY_URL, MERRIAM_DICTIONARY_API_KEY } = API_CONFIG;
 
+// todo: clean up if it is not used
 /**
  * Fetches word definitions from the Merriam-Webster dictionary API.
  * @param {string} query - The word to look up.

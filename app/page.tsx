@@ -6,6 +6,7 @@ import {
   getUser
 } from '@/utils/supabase/queries';
 import { DictionaryManager } from '@/components/DictionaryManager';
+import { ScreenshotPage } from '@/components/Screenshot';
 
 export default async function PricingPage() {
   const supabase = createClient();
@@ -16,7 +17,9 @@ export default async function PricingPage() {
   ]);
 
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-row min-h-screen border-t-2 justify-evenly">
+      <ScreenshotPage />
+      <div className="w-0.5 h-auto bg-black bg-opacity-10"></div>
       <DictionaryManager user={user} />
     </main>
     // <Pricing

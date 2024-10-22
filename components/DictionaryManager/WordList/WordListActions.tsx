@@ -8,9 +8,16 @@ type WordListActionsProps = {
 };
 
 export const GenerateArticleButton = ({
-  onGenerateArticle
-}: Pick<WordListActionsProps, 'onGenerateArticle'>) => {
-  return <Button onClick={onGenerateArticle}>Generate AI article 🤖</Button>;
+  onGenerateArticle,
+  className = ''
+}: Pick<WordListActionsProps, 'onGenerateArticle'> & {
+  className?: string;
+}) => {
+  return (
+    <Button className={className ?? ''} onClick={onGenerateArticle}>
+      Generate AI article 🤖
+    </Button>
+  );
 };
 
 const WordListActions = ({
@@ -19,14 +26,16 @@ const WordListActions = ({
   onClearList
 }: WordListActionsProps) => {
   return (
-    <div className="flex gap-5 pb-10">
+    <div className="flex flex-wrap items-center justify-center flex-1 gap-5 px-2 pb-32">
       <GenerateArticleButton onGenerateArticle={onGenerateArticle} />
-      <Button onClick={onSaveList} variant="outline">
-        ✅ Save list
-      </Button>
-      <Button variant="secondary" onClick={onClearList}>
-        🗑️ Clear
-      </Button>
+      <div className="flex flex-wrap gap-5">
+        <Button onClick={onSaveList} variant="outline">
+          ✅ Save list
+        </Button>
+        <Button variant="secondary" onClick={onClearList}>
+          🗑️ Clear
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,31 +1,24 @@
 'use client';
 
 import type React from 'react';
-import type { WordDefinition } from '@/services/dictionary';
 
 import { useRouter } from 'next/navigation';
-import WordListActions, { GenerateArticleButton } from './WordListActions';
+import WordListActions from './WordListActions';
 import WordCards from './WordCards';
 import { User } from '@supabase/supabase-js';
+import type { WordDefinition } from '@/store/useWordsStore';
+import useWordsStore from '@/store/useWordsStore';
 
 type WordListProps = {
   words: WordDefinition[];
-  setWords: React.Dispatch<React.SetStateAction<WordDefinition[]>>;
   user: User | null;
-  setArticlePanelOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const WordList = ({
-  words,
-  setWords,
-  user,
-  setArticlePanelOpened
-}: WordListProps) => {
+const WordList = ({ words, user }: WordListProps) => {
   const router = useRouter();
+  const setWords = useWordsStore((state) => state.setWords);
 
-  const generateArticle = () => {
-    setArticlePanelOpened(true);
-  };
+  const generateArticle = () => {};
 
   const saveList = () => {
     if (user) console.log('Saving...');
@@ -34,21 +27,24 @@ const WordList = ({
 
   const clearList = () => {
     setWords([]);
-    setArticlePanelOpened(false);
   };
 
   return (
     <>
-      {words.length > 0 && (
+      {words.length > 0 ? (
         <>
-          <GenerateArticleButton onGenerateArticle={generateArticle} />
-          <WordCards words={words} setWords={setWords} />
           <WordListActions
             onGenerateArticle={generateArticle}
             onSaveList={saveList}
             onClearList={clearList}
           />
+          <WordCards words={words} setWords={setWords} />
         </>
+      ) : (
+        <div className="px-5 text-center">
+          No word in the list yet. <br />
+          Click on the word in the screenshot to save.
+        </div>
       )}
     </>
   );
