@@ -18,9 +18,9 @@ export default async function PricingPage() {
   ]);
 
   return (
-    <main className="flex flex-row min-h-screen border-t-2 justify-evenly">
+    <main className="flex flex-col min-h-screen gap-20 border-t-2 lg:flex-row lg:justify-evenly lg:gap-0">
       <ScreenshotPage />
-      <Divider />
+      <Divider className="hidden lg:block" />
       <DictionaryManager user={user} />
     </main>
     // <Pricing

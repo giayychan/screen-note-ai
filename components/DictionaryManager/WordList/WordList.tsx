@@ -41,7 +41,7 @@ const WordList = ({ words, user }: WordListProps) => {
           <WordCards words={words} setWords={setWords} />
         </>
       ) : (
-        <div className="px-5 text-center">
+        <div className="px-5 pb-10 text-center">
           No word in the list yet. <br />
           Click on the word in the screenshot to save.
         </div>

@@ -12,8 +12,10 @@ const DictionaryManager = ({ user }: DictionaryManagerProps) => {
   const words = useWordsStore((state) => state.words);
 
   return (
-    <div className="flex-1">
-      <h2 className="p-10 text-3xl font-bold text-center">Words Notebook 📘</h2>
+    <div className="lg:flex-1">
+      <h2 className="py-10 text-xl font-bold text-center md:text-3xl lg:p-10">
+        Words Notebook 📘
+      </h2>
       <WordList user={user} words={words} />
     </div>
   );

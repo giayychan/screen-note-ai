@@ -27,7 +27,7 @@ const WordCards = ({ words, setWords }: WordCardsProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 px-2">
+    <div className="flex flex-col gap-2 px-2 pb-10 lg:gap-5">
       {words.map((word) => (
         <Card key={word.id}>
           <CardSettings>
@@ -43,9 +43,11 @@ const WordCards = ({ words, setWords }: WordCardsProps) => {
             </DropdownMenu>
           </CardSettings>
           <CardHeader>
-            <CardTitle>{word.text}</CardTitle>
+            <CardTitle className="text-md lg:text-lg">{word.text}</CardTitle>
           </CardHeader>
-          <CardContent>{word.definition}</CardContent>
+          <CardContent className="text-sm lg:text-base">
+            {word.definition}
+          </CardContent>
         </Card>
       ))}
     </div>

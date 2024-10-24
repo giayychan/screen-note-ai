@@ -15,7 +15,7 @@ export const UrlInput = ({
 }) => {
   return (
     <form onSubmit={onSubmit}>
-      <p className="p-10 text-3xl font-bold text-center">
+      <p className="py-10 text-xl font-bold text-center lg:p-10 md:text-3xl">
         Website you want to read 👇
       </p>
       <div className="flex w-full gap-2 px-5">

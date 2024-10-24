@@ -26,9 +26,9 @@ const WordListActions = ({
   onClearList
 }: WordListActionsProps) => {
   return (
-    <div className="flex flex-wrap items-center justify-center flex-1 gap-5 px-2 pb-32">
+    <div className="flex flex-wrap items-center justify-center flex-1 md:gap-5 gap-2 px-2 [&_button]:text-xs md:pb-16 lg:pb-32 pb-6 [&_button]:md:text-base">
       <GenerateArticleButton onGenerateArticle={onGenerateArticle} />
-      <div className="flex flex-wrap gap-5">
+      <div className="flex flex-wrap gap-2 md:gap-5">
         <Button onClick={onSaveList} variant="outline">
           ✅ Save list
         </Button>

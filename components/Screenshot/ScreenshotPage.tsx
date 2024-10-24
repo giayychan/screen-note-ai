@@ -47,8 +47,8 @@ export default function ScreenshotPage() {
   };
 
   return (
-    <div className="flex flex-col items-center" style={{ width: '60vw' }}>
-      <div className="flex flex-col w-full gap-10">
+    <div className="flex flex-col items-center w-full lg:w-[60vw]">
+      <div className="flex flex-col w-full gap-10 pb-2">
         <UrlInput
           onSubmit={onSubmit}
           value={url}
