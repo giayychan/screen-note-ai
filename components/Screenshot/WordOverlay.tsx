@@ -3,6 +3,7 @@ import Button from '../ui/Button';
 import useWordsStore from '@/stores/useWordsStore';
 import { nanoid } from 'nanoid';
 import { OcrWord } from '@/stores/useScreenshotStore';
+import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
 interface WordOverlayProps {
   words: OcrWord[];
@@ -10,24 +11,15 @@ interface WordOverlayProps {
 
 interface WordProps {
   word: OcrWord;
-  isOpen: boolean;
-  onClick: () => void;
 }
 
-const WordComponent = memo(({ word, isOpen, onClick }: WordProps) => {
+const WordComponent = memo(({ word }: WordProps) => {
   const [meaning, setMeaning] = useState('');
   const [loading, setLoading] = useState(false);
 
   const addWord = useWordsStore((state) => state.addWord);
 
-  const onModalClick = async (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-  };
-
   const getAIDefinition = async () => {
-    onClick();
     setLoading(true);
     try {
       const response = await fetch('/api/bert-definition', {
@@ -61,31 +53,28 @@ const WordComponent = memo(({ word, isOpen, onClick }: WordProps) => {
       definition: meaning,
       id: nanoid()
     });
-    onClick();
+  };
+
+  const handlePopOverOpenChange = async (open: boolean) => {
+    if (open) {
+      await getAIDefinition();
+    }
   };
 
   return (
     <div
-      className="absolute w-full p-1 hover:outline outline-1 outline-offset-1"
+      className="absolute"
       style={{
         top: `${word.bbox.y0}%`,
         left: `${word.bbox.x0}%`,
         width: `${word.bbox.x1 - word.bbox.x0}%`,
         height: `${word.bbox.y1 - word.bbox.y0}%`
       }}
-      onClick={getAIDefinition}
     >
-      {isOpen && (
-        <div
-          onClick={onModalClick}
-          className="absolute flex flex-col gap-2 p-6 mb-1 -translate-x-1/2 rounded bottom-full left-1/2 text-primary bg-secondary w-96"
-        >
-          <div>
-            <span className="outline outline-1 outline-offset-1">
-              {word.text}
-            </span>
-          </div>
-
+      <Popover onOpenChange={handlePopOverOpenChange}>
+        <PopoverTrigger className="size-full hover:outline outline-1 outline-offset-1"></PopoverTrigger>
+        <PopoverContent align="start">
+          <p>{word.text}</p>
           {loading ? (
             <span>Loading definition...</span>
           ) : meaning ? (
@@ -94,34 +83,14 @@ const WordComponent = memo(({ word, isOpen, onClick }: WordProps) => {
               <Button onClick={() => handleAddWord(word)}>
                 Add to word list
               </Button>
-              <Button variant="ghost" onClick={onClick}>
-                Close
-              </Button>
             </div>
           ) : null}
-        </div>
-      )}
+        </PopoverContent>
+      </Popover>
     </div>
   );
 });
 
 export const WordOverlay = ({ words }: WordOverlayProps) => {
-  const [openWordIndex, setOpenWordIndex] = useState<number | null>(null);
-
-  const handleWordClick = (index: number) => {
-    setOpenWordIndex(openWordIndex === index ? null : index);
-  };
-
-  return (
-    <>
-      {words.map((word, index) => (
-        <WordComponent
-          key={index}
-          word={word}
-          isOpen={openWordIndex === index}
-          onClick={() => handleWordClick(index)}
-        />
-      ))}
-    </>
-  );
+  return words.map((word, index) => <WordComponent key={index} word={word} />);
 };
