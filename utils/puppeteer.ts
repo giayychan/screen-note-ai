@@ -9,7 +9,7 @@ export async function renderScreenshotWithPuppeteer(
 ) {
   const browser = await puppeteer.launch({
     args: isLocal ? puppeteer.defaultArgs() : chromium.args,
-    defaultViewport: { width: Math.floor(screenshotWidth), height: 1000 },
+    defaultViewport: chromium.defaultViewport,
     executablePath:
       process.env.CHROME_EXECUTABLE_PATH ||
       (await chromium.executablePath(

@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
 import { renderScreenshotWithPuppeteer } from '@/utils/puppeteer';
-import { unstable_noStore } from 'next/cache';
 
 type PostRequestBody = {
   url: string;
   screenshotWidth: number;
 };
 
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
-    unstable_noStore();
-
     const data: PostRequestBody = await request.json();
     const { url, screenshotWidth } = data;
     if (!url) {
