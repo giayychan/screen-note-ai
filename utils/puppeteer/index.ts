@@ -55,9 +55,9 @@ export async function renderScreenshotWithPuppeteer(
     });
 
     return blob;
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
-    return { error: 'Internal Server Error' };
+    throw Error(err);
   } finally {
     if (browser) await browser.close();
   }
