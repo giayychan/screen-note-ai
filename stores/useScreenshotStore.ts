@@ -5,7 +5,7 @@ import { devtools, persist } from 'zustand/middleware';
 
 import type { Bbox } from 'tesseract.js';
 
-export type OcrWord = { paragraph: { text: string }; text: string; bbox: Bbox };
+export type OcrWord = { line: { text: string }; text: string; bbox: Bbox };
 
 export interface ScreenshotState {
   url: string;

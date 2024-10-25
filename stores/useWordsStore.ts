@@ -4,7 +4,11 @@ import { devtools, persist } from 'zustand/middleware';
 
 export interface WordDefinition {
   text: string;
-  definition: string;
+  dictionary: {
+    definition: string;
+    example: string;
+    part_of_speech: string;
+  };
   id: string;
 }
 

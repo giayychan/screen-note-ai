@@ -43,10 +43,19 @@ const WordCards = ({ words, setWords }: WordCardsProps) => {
             </DropdownMenu>
           </CardSettings>
           <CardHeader>
-            <CardTitle className="text-md lg:text-lg">{word.text}</CardTitle>
+            <CardTitle className="text-md md:text-lg lg:text-xl first-letter:uppercase">
+              {word.text}
+            </CardTitle>
+            <p className="text-sm font-light lg:text-base first-letter:uppercase">
+              {word.dictionary.part_of_speech}
+            </p>
           </CardHeader>
           <CardContent className="text-sm lg:text-base">
-            {word.definition}
+            <p>{word.dictionary.definition}</p>
+            <br />
+            <p className="text-sm italic">
+              Example: "{word.dictionary.example}"
+            </p>
           </CardContent>
         </Card>
       ))}

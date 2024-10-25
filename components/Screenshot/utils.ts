@@ -43,10 +43,12 @@ export const extractTextFromImage = async (
         y1: (w.bbox.y1 / dimensions.height) * 100
       };
 
+      const sanitizedWordText = w.text.replace(/[^a-zA-Z0-9]+$/, '');
+
       acc.push({
-        text: w.text,
+        text: sanitizedWordText,
         bbox,
-        paragraph: { text: w.paragraph.text }
+        line: { text: w.line.text }
       });
     }
     return acc;
