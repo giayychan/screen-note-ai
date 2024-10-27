@@ -1,5 +1,5 @@
 (() => {
-  const windowsPatch = (w: any) => {
+  const windowsPatch = (w) => {
     w.chrome = {
       app: {
         isInstalled: false,
@@ -40,17 +40,15 @@
       let args = [...arguments];
       let temp = args[1];
       args[1] = function () {
-        // @ts-ignore
         let args2 = [...arguments];
         args2[0] = Object.assign({}, args2[0]);
         args2[0].isTrusted = true;
         return temp(...args2);
       };
-      // @ts-ignore
       return this._addEventListener(...args);
     };
   };
-  const cloudflareClicker = (w: any) => {
+  const cloudflareClicker = (w) => {
     if (w?.document && w.location.host === 'challenges.cloudflare.com') {
       const targetSelector = 'input[type=checkbox]';
       const observer = new MutationObserver((mutationsList) => {

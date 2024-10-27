@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState } from 'react';
 import useWordsStore, { WordDefinition } from '@/stores/useWordsStore';
 import { nanoid } from 'nanoid';
 import { OcrWord } from '@/stores/useScreenshotStore';
@@ -13,7 +13,7 @@ interface WordProps {
   word: OcrWord;
 }
 
-const WordComponent = memo(({ word }: WordProps) => {
+const WordComponent = ({ word }: WordProps) => {
   const [dictionary, setDictionary] = useState<WordDefinition['dictionary']>();
   const [loading, setLoading] = useState(false);
 
@@ -66,18 +66,19 @@ const WordComponent = memo(({ word }: WordProps) => {
     }
   };
 
+  const placement = {
+    top: `${word.bbox.y0}%`,
+    left: `${word.bbox.x0}%`,
+    width: `${word.bbox.x1 - word.bbox.x0}%`,
+    height: `${word.bbox.y1 - word.bbox.y0}%`
+  };
+
   return (
-    <div
-      className="absolute"
-      style={{
-        top: `${word.bbox.y0}%`,
-        left: `${word.bbox.x0}%`,
-        width: `${word.bbox.x1 - word.bbox.x0}%`,
-        height: `${word.bbox.y1 - word.bbox.y0}%`
-      }}
-    >
+    <div className="absolute" style={placement}>
       <Popover onOpenChange={handlePopOverOpenChange}>
-        <PopoverTrigger className="size-full hover:outline outline-1 outline-offset-1"></PopoverTrigger>
+        <PopoverTrigger className="text-transparent hover:bg-yellow-500 size-full hover:outline outline-yellow-500 hover:bg-opacity-40 outline-1 outline-offset-1">
+          {word.text}
+        </PopoverTrigger>
         <PopoverContent align="start">
           <p className="pb-1 text-base font-bold md:text-xl first-letter:uppercase">
             {word.text}
@@ -104,7 +105,7 @@ const WordComponent = memo(({ word }: WordProps) => {
       </Popover>
     </div>
   );
-});
+};
 
 export const WordOverlay = ({ words }: WordOverlayProps) => {
   return words.map((word, index) => <WordComponent key={index} word={word} />);

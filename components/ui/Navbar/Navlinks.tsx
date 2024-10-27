@@ -19,8 +19,8 @@ export default function Navlinks({ user }: NavlinksProps) {
   return (
     <div className="relative flex flex-row justify-between py-4 align-center lg:py-6">
       <div className="flex items-center flex-1">
-        <Link href="/" aria-label="Logo" className="flex items-center">
-          <Logo />{' '}
+        <Link href="/" aria-label="Logo" className="flex items-center gap-2">
+          <Logo />
           <span className="hidden text-xl lg:block">ScreenNote AI</span>
         </Link>
         <nav className="ml-6 space-x-2 lg:block">

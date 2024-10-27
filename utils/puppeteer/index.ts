@@ -25,7 +25,7 @@ export async function renderScreenshotWithPuppeteer(
             '-disable-site-isolation-trials'
           ]
         : [...chromium.args, '--disable-blink-features=AutomationControlled'],
-      defaultViewport: { width: screenshotWidth, height: 1080 },
+      defaultViewport: { width: Math.ceil(screenshotWidth), height: 1080 },
       executablePath: isDev
         ? localExecutablePath
         : await chromium.executablePath(remoteExecutablePath),
@@ -36,9 +36,9 @@ export async function renderScreenshotWithPuppeteer(
     const pages = await browser.pages();
     const page = pages[0];
     await page.setUserAgent(userAgent);
-    await page.setViewport({ width: 1920, height: 1080 });
+
     const preloadFile = fs.readFileSync(
-      path.join(process.cwd(), '/src/utils/preload.js'),
+      path.join(process.cwd(), '/utils/puppeteer/preload.js'),
       'utf8'
     );
     await page.evaluateOnNewDocument(preloadFile);

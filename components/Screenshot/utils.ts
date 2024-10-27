@@ -20,9 +20,9 @@ export const fetchScreenshot = async (url: string, screenshotWidth: number) => {
 
 export const extractTextFromImage = async (
   base64Image: string,
-  setProgress: (value: number) => void,
-  dimensions: { height: number; width: number }
+  setProgress: (value: number) => void
 ): Promise<OcrWord[]> => {
+  const dimensions = await getImageDimensions(base64Image);
   const { data } = await recognize(base64Image, 'eng', {
     logger: (m) => {
       if (m.status === 'recognizing text') setProgress(m.progress * 100);
@@ -56,3 +56,18 @@ export const extractTextFromImage = async (
 
   return storageOcrWords;
 };
+
+function getImageDimensions(
+  base64Image: string
+): Promise<{ width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = () => {
+      resolve({ width: img.width, height: img.height });
+    };
+
+    img.onerror = reject;
+    img.src = base64Image;
+  });
+}

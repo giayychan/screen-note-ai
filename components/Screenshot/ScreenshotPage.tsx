@@ -1,6 +1,12 @@
 'use client';
 
-import { type ChangeEvent, type FormEvent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { useOcr, useScreenshot } from './hooks';
 import { UrlInput } from './UrlInput';
 import LoadingImageOverlay from '../ui/LoadingImageOverlay';
@@ -8,15 +14,17 @@ import { WordOverlay } from './WordOverlay';
 import LoadingSection from './LoadingSection';
 
 export default function ScreenshotPage() {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const ref = useRef<HTMLDivElement>(null);
+  const containerWidth = ref?.current?.clientWidth;
 
   const {
     base64Image,
+    setBase64Image,
     loading: loadingScreenshot,
     fetchImage,
     url,
     setUrl
-  } = useScreenshot();
+  } = useScreenshot(containerWidth);
 
   const {
     ocrWords,
@@ -24,7 +32,7 @@ export default function ScreenshotPage() {
     progress,
     setProgress,
     setOcrWords
-  } = useOcr(base64Image, dimensions);
+  } = useOcr(base64Image);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,17 +45,12 @@ export default function ScreenshotPage() {
     await fetchImage(url);
   };
 
-  const handleImageLoad = (e: ChangeEvent<HTMLImageElement>) => {
-    const { naturalWidth, naturalHeight } = e.target;
-    setDimensions({ width: naturalWidth, height: naturalHeight });
-  };
-
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
   };
 
   return (
-    <div className="flex flex-col items-center w-full lg:w-[60vw]">
+    <div className="flex flex-col items-center w-full lg:w-[60vw]" ref={ref}>
       <div className="flex flex-col w-full gap-10 pb-2">
         <UrlInput
           onSubmit={onSubmit}
@@ -64,12 +67,7 @@ export default function ScreenshotPage() {
           )}
           {base64Image && (
             <div className="relative">
-              <img
-                src={base64Image}
-                alt="screenshot"
-                className="w-full"
-                onLoad={handleImageLoad}
-              />
+              <img src={base64Image} alt="screenshot" className="w-full" />
               {progress !== 100 || !ocrWords ? (
                 <LoadingImageOverlay progress={progress} />
               ) : (
