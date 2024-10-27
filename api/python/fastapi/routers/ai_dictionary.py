@@ -48,7 +48,7 @@ class WordContext(BaseModel):
     context: str
 
 
-@router.post("/")
+@router.post("")
 def generate_ai_dictionary(word_context: WordContext):
     result = generate_word_dictionary(word_context.word, word_context.context)
     return result
