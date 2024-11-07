@@ -1,4 +1,3 @@
-import type { OcrWord } from '@/stores/useScreenshotStore';
 import { useEffect, useState } from 'react';
 import {
   extractTextFromImage,
@@ -6,14 +5,21 @@ import {
   SCREENSHOT_WIDTH_PERCENTAGE
 } from './utils';
 import useScreenshotStore from '@/stores/useScreenshotStore';
+import { useStore } from 'zustand';
 
 export function useScreenshot(containerWidth?: number) {
   const [loading, setLoading] = useState(false);
 
-  const base64Image = useScreenshotStore((state) => state.base64Image);
-  const setBase64Image = useScreenshotStore((state) => state.setBase64Image);
-  const url = useScreenshotStore((state) => state.url);
-  const setUrl = useScreenshotStore((state) => state.setUrl);
+  const base64Image = useStore(
+    useScreenshotStore,
+    (state) => state.base64Image
+  );
+  const setBase64Image = useStore(
+    useScreenshotStore,
+    (state) => state.setBase64Image
+  );
+  const url = useStore(useScreenshotStore, (state) => state.url);
+  const setUrl = useStore(useScreenshotStore, (state) => state.setUrl);
 
   const fetchImage = async (url: string) => {
     try {
@@ -33,7 +39,6 @@ export function useScreenshot(containerWidth?: number) {
   return {
     base64Image,
     loading,
-    setBase64Image,
     fetchImage,
     setUrl,
     url
@@ -41,7 +46,9 @@ export function useScreenshot(containerWidth?: number) {
 }
 
 export function useOcr(base64Image: string) {
-  const [ocrWords, setOcrWords] = useState<OcrWord[]>();
+  const setOcrWords = useScreenshotStore((state) => state.setOcrWords);
+  const ocrWords = useScreenshotStore((state) => state.ocrWords);
+
   const [loading, setLoading] = useState(false);
 
   const [progress, setProgress] = useState(0);
@@ -59,8 +66,9 @@ export function useOcr(base64Image: string) {
   };
 
   useEffect(() => {
-    if (base64Image && !ocrWords) {
-      fetchOcrWords();
+    if (base64Image) {
+      if (!ocrWords) fetchOcrWords();
+      else setProgress(100);
     }
   }, [base64Image, ocrWords]);
 

@@ -1,21 +1,26 @@
 import { OcrWord } from '@/stores/useScreenshotStore';
 import { recognize } from 'tesseract.js';
+import axios from 'axios';
 
 export const SCREENSHOT_WIDTH_PERCENTAGE = 60 / 100;
 export const CONFIDENCE_THRESHOLD = 40;
 
 export const fetchScreenshot = async (url: string, screenshotWidth: number) => {
-  const response = await fetch('/api/screenshot', {
-    method: 'POST',
-    body: JSON.stringify({ url, screenshotWidth })
-  });
+  try {
+    const response = await axios.post(
+      '/api/screenshot',
+      { url, screenshotWidth },
+      {
+        responseType: 'arraybuffer'
+      }
+    );
 
-  if (!response.ok) {
+    const encoded = Buffer.from(response.data, 'binary').toString('base64');
+    return `data:image/jpeg;base64,${encoded}`;
+  } catch (error) {
+    console.error('Failed to fetch screenshot:', error);
     throw new Error('Failed to fetch screenshot');
   }
-
-  const encoded = Buffer.from(await response.arrayBuffer()).toString('base64');
-  return `data:image/jpeg;base64,${encoded}`;
 };
 
 export const extractTextFromImage = async (

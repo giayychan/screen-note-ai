@@ -1,12 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import ai_dictionary
+from .routers import ai_dictionary, ai_article
 
-root_path = "/api/python/fastapi"
 
-app = FastAPI(root_path=root_path, docs_url="/docs",
-              openapi_url="/openapi.json")
+app = FastAPI(root_path="/api/python/fastapi")
 
 
 @app.get("/healthchecker")
@@ -23,3 +21,4 @@ app.add_middleware(
 )
 
 app.include_router(ai_dictionary.router)
+app.include_router(ai_article.router)

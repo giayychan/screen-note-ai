@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  type ChangeEvent,
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { type ChangeEvent, type FormEvent, useRef } from 'react';
 import { useOcr, useScreenshot } from './hooks';
 import { UrlInput } from './UrlInput';
 import LoadingImageOverlay from '../ui/LoadingImageOverlay';
@@ -19,7 +13,6 @@ export default function ScreenshotPage() {
 
   const {
     base64Image,
-    setBase64Image,
     loading: loadingScreenshot,
     fetchImage,
     url,
@@ -68,8 +61,10 @@ export default function ScreenshotPage() {
           {base64Image && (
             <div className="relative">
               <img src={base64Image} alt="screenshot" className="w-full" />
-              {progress !== 100 || !ocrWords ? (
+              {progress !== 100 ? (
                 <LoadingImageOverlay progress={progress} />
+              ) : !ocrWords ? (
+                <p>No word found in the screenshot</p>
               ) : (
                 <WordOverlay words={ocrWords} />
               )}

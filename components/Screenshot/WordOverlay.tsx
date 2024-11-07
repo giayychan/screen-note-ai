@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid';
 import { OcrWord } from '@/stores/useScreenshotStore';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 import Button from '../ui/Button';
+import { useStore } from 'zustand';
+import axios from 'axios';
 
 interface WordOverlayProps {
   words: OcrWord[];
@@ -16,35 +18,36 @@ interface WordProps {
 const WordComponent = ({ word }: WordProps) => {
   const [dictionary, setDictionary] = useState<WordDefinition['dictionary']>();
   const [loading, setLoading] = useState(false);
-
-  const addWord = useWordsStore((state) => state.addWord);
+  const [added, setAdded] = useState(false);
+  const addWord = useStore(useWordsStore, (state) => state.addWord);
 
   const getAIDictionary = async () => {
     setLoading(true);
+
     try {
-      const response = await fetch('/api/python/fastapi/ai_dictionary', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        '/api/python/fastapi/ai_dictionary',
+        {
           word: word.text,
           context: word.line.text
-        })
-      });
-
-      const data = await response.json();
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
       if (response.status !== 200) {
-        throw Error(data?.error || 'Something went wrong.');
+        throw new Error(response.data?.error || 'Something went wrong.');
       }
 
-      if (data) {
-        const dictionary = JSON.parse(data);
+      if (response.data) {
+        const dictionary = JSON.parse(response.data);
         setDictionary(dictionary);
       }
     } catch (error: any) {
-      console.log(error?.message);
+      console.error(error?.message);
     } finally {
       setLoading(false);
     }
@@ -58,6 +61,11 @@ const WordComponent = ({ word }: WordProps) => {
       dictionary,
       id: nanoid()
     });
+
+    setAdded(true);
+    setTimeout(() => {
+      setAdded(false);
+    }, 3000);
   };
 
   const handlePopOverOpenChange = async (open: boolean) => {
@@ -96,9 +104,12 @@ const WordComponent = ({ word }: WordProps) => {
               <p className="pb-6 text-sm italic">
                 Example: "{dictionary.example}"
               </p>
-              <Button onClick={() => handleAddWord(word)}>
-                Add to word list
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button onClick={() => handleAddWord(word)}>
+                  Add to word list
+                </Button>
+                {added && <p>Added!</p>}
+              </div>
             </>
           ) : null}
         </PopoverContent>
