@@ -19,10 +19,16 @@ const ArticleContent = ({
   return (
     <span className="md:text-lg whitespace-break-spaces">
       {article.map((a, i) => {
-        const wordInList = wordsWithColor.find(
-          (w) =>
-            w.text.toLowerCase() === a.toLowerCase().trim().replaceAll('\n', '')
-        );
+        const wordInList = wordsWithColor.find((w) => {
+          return (
+            w.text.toLowerCase() ===
+            a
+              .toLowerCase()
+              .trim()
+              .replaceAll('\n', '')
+              .replace(/[^\w\s]/g, '')
+          );
+        });
 
         return (
           <span
