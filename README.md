@@ -1,7 +1,7 @@
 
 # Screen Note AI
 
-![Logo](./public/android-chrome-192x192.png)
+![Logo](./public/favicon.ico)
 
 ## 📋 Table of Contents
 
