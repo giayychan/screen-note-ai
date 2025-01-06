@@ -24,9 +24,6 @@ export default function Navlinks({ user }: NavlinksProps) {
           <span className="hidden text-xl lg:block">ScreenNote AI</span>
         </Link>
         <nav className="ml-6 space-x-2 lg:block">
-          {/* <Link href="/" className={s.link}>
-            Pricing
-          </Link> */}
           {user && <Link href="/account">Account</Link>}
         </nav>
       </div>
@@ -39,6 +36,14 @@ export default function Navlinks({ user }: NavlinksProps) {
         ) : (
           <Link href="/signin">Sign In</Link>
         )}
+        <Link
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Buy me a coffee"
+          href="https://buymeacoffee.com/giawdevtesq"
+        >
+          Buy Me A Coffee
+        </Link>
       </div>
       <div>
         <ModeToggle />

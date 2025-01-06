@@ -15,8 +15,9 @@ const merriweather = Merriweather({
   variable: '--font-merriweather'
 });
 
-const title = 'Next.js Subscription Starter';
-const description = 'Brought to you by Vercel, Stripe, and Supabase.';
+const title = 'Screen Note AI';
+const description =
+  'a tool to enhance learning by extracting text from websites, providing contextual word definitions, and building personalized vocabulary lists.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getURL()),

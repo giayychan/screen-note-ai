@@ -1,4 +1,4 @@
-// todo: clean up if it is not used
+// TODO: clean up if it is not used
 export function getSubDirectory(baseFilename: string) {
   if (baseFilename.startsWith('bix')) {
     return 'bix';
@@ -21,7 +21,7 @@ export function getSubDirectory(baseFilename: string) {
   return firstChar;
 }
 
-// todo: clean up if it is not used
+// TODO: clean up if it is not used
 export function createSoundLink({
   languageCode = 'en',
   countryCode = 'us',
