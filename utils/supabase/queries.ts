@@ -37,3 +37,50 @@ export const getUserDetails = cache(async (supabase: SupabaseClient) => {
     .single();
   return userDetails;
 });
+
+export const getCurrentUserLists = cache(async (supabase: SupabaseClient) => {
+  const res = await supabase.auth.getUser();
+  const user = res.data.user;
+
+  if (!user) {
+    return [];
+  }
+
+  const { data: lists } = await supabase
+    .from('lists')
+    .select('*')
+    .eq('user_id', user.id);
+
+  return lists;
+});
+
+export const getListById = cache(
+  async (supabase: SupabaseClient, list_id: string) => {
+    const { data: list } = await supabase
+      .from('lists')
+      .select('*')
+      .eq('id', list_id)
+      .single();
+
+    return list;
+  }
+);
+
+export const getWordsByListId = cache(
+  async (supabase: SupabaseClient, list_id: string) => {
+    const res = await supabase.auth.getUser();
+    const user = res.data.user;
+
+    if (!user) {
+      return null;
+    }
+
+    const { data: words } = await supabase
+      .from('words')
+      .select('*')
+      .eq('list_id', list_id)
+      .order('created_at', { ascending: false });
+
+    return words;
+  }
+);

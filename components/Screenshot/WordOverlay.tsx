@@ -6,6 +6,8 @@ import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 import Button from '../ui/Button';
 import { useStore } from 'zustand';
 import axios from 'axios';
+import { createClient } from '@/utils/supabase/client';
+import { useParams, usePathname } from 'next/navigation';
 
 interface WordOverlayProps {
   words: OcrWord[];
@@ -20,6 +22,9 @@ const WordComponent = ({ word }: WordProps) => {
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const addWord = useStore(useWordsStore, (state) => state.addWord);
+  const params = useParams();
+  const { slug } = params;
+  const pathname = usePathname();
 
   const getAIDictionary = async () => {
     setLoading(true);
@@ -53,14 +58,40 @@ const WordComponent = ({ word }: WordProps) => {
     }
   };
 
-  const handleAddWord = (word: OcrWord) => {
+  const handleAddWord = async (word: OcrWord) => {
     if (!dictionary) return;
 
-    addWord({
-      text: word.text,
-      dictionary,
-      id: nanoid()
-    });
+    if (pathname.includes('/list') && slug) {
+      const supabase = createClient();
+
+      const wordToInsert = {
+        list_id: slug as string,
+        text: word.text,
+        definition: dictionary.definition,
+        example: dictionary.example,
+        part_of_speech: dictionary.part_of_speech
+      };
+
+      const { data } = await supabase
+        .from('words')
+        .insert(wordToInsert)
+        .select('id')
+        .single();
+
+      if (data) {
+        addWord({
+          text: word.text,
+          dictionary,
+          id: data.id
+        });
+      }
+    } else {
+      addWord({
+        text: word.text,
+        dictionary,
+        id: nanoid()
+      });
+    }
 
     setAdded(true);
     setTimeout(() => {
@@ -88,9 +119,11 @@ const WordComponent = ({ word }: WordProps) => {
           {word.text}
         </PopoverTrigger>
         <PopoverContent align="start">
-          <p className="pb-1 text-base font-bold md:text-xl first-letter:uppercase">
-            {word.text}
-          </p>
+          <div className="flex flex-row">
+            <p className="pb-1 text-base font-bold md:text-xl first-letter:uppercase">
+              {word.text}
+            </p>
+          </div>
           {loading ? (
             <span>Loading ai dictionary...</span>
           ) : dictionary ? (

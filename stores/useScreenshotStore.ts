@@ -16,6 +16,7 @@ export interface ScreenshotState {
   setBase64Image: (base64Image: string) => void;
   ocrWords?: OcrWord[];
   setOcrWords: (words?: OcrWord[]) => void;
+  reset: () => void;
 }
 
 const storage = createJSONStorage<ScreenshotState>(() => localStorage, {
@@ -51,7 +52,9 @@ const useScreenshotStore = create<ScreenshotState>()(
         base64Image: '',
         setBase64Image: (base64Image) => set(() => ({ base64Image })),
         ocrWords: undefined,
-        setOcrWords: (ocrWords) => set(() => ({ ocrWords }))
+        setOcrWords: (ocrWords) => set(() => ({ ocrWords })),
+        reset: () =>
+          set(() => ({ url: '', base64Image: '', ocrWords: undefined }))
       }),
       {
         name: 'screenshot-storage',

@@ -8,7 +8,7 @@ import {
   getDefaultSignInView,
   getRedirectMethod
 } from '@/utils/auth-helpers/settings';
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/Card/Card';
 import PasswordSignIn from '@/components/ui/AuthForms/PasswordSignIn';
 import EmailSignIn from '@/components/ui/AuthForms/EmailSignIn';
 import Separator from '@/components/ui/AuthForms/Separator';
@@ -56,7 +56,7 @@ export default async function SignIn({
 
   return (
     <div className="flex justify-center height-screen-helper">
-      <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 ">
+      <div className="flex flex-col justify-between max-w-lg p-3 m-auto w-80 md:w-96">
         <div className="flex justify-center pb-12 ">
           <Logo />
         </div>

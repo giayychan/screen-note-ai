@@ -143,3 +143,39 @@ create policy "Can only view own subs data." on subscriptions for select using (
  */
 drop publication if exists supabase_realtime;
 create publication supabase_realtime for table products, prices;
+
+-- Create the "lists" table
+create table lists (
+  id uuid default gen_random_uuid() primary key, -- Unique ID for the list
+  user_id uuid references auth.users not null, -- Foreign key to the auth.users table
+  name text not null, -- Name of the list
+  created_at timestamp with time zone default now() not null, -- Creation timestamp
+  updated_at timestamp with time zone default now() not null -- Last update timestamp
+);
+
+-- Enable Row-Level Security (RLS) on the "lists" table
+alter table lists enable row level security;
+
+-- Create policy to allow users to view their own lists
+create policy "Can view own lists"
+  on lists
+  for select
+  using (auth.uid() = user_id);
+
+-- Create policy to allow users to insert their own lists
+create policy "Can insert own lists"
+  on lists
+  for insert
+  with check (auth.uid() = user_id);
+
+-- Create policy to allow users to update their own lists
+create policy "Can update own lists"
+  on lists
+  for update
+  using (auth.uid() = user_id);
+
+-- Create policy to allow users to delete their own lists
+create policy "Can delete own lists"
+  on lists
+  for delete
+  using (auth.uid() = user_id);

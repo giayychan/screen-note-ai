@@ -15,10 +15,10 @@ export const UrlInput = ({
 }) => {
   return (
     <form onSubmit={onSubmit}>
-      <p className="py-10 text-xl font-bold text-center lg:p-10 md:text-3xl">
-        Website you want to read 👇
+      <p className="pt-10 pb-5 text-center lg:p-10 lg:pb-3">
+        Paste the URL of the website 👇
       </p>
-      <div className="flex w-full gap-2 px-5">
+      <div className="flex max-w-2xl gap-2 mx-auto">
         <Input
           type="url"
           name="url"

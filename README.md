@@ -1,4 +1,3 @@
-
 # Screen Note AI
 
 ![Logo](./public/favicon.ico)
@@ -13,7 +12,6 @@
   - [🎯 Use Cases](#-use-cases)
   - [⚙️ Setup Instructions](#️-setup-instructions)
   - [🌐 Demo](#-demo)
-  - [💻 Contributing](#-contributing)
   - [💰 Donation](#-donation)
   - [📝 Feature Request](#-feature-request)
 
@@ -57,37 +55,38 @@ With features like contextual word definitions and a personalized vocabulary bui
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/Giayychan/screen-note-ai your-repo-name
-    cd your-repo-name
-    ```
+   ```bash
+   git clone https://github.com/Giayychan/screen-note-ai your-repo-name
+   cd your-repo-name
+   ```
 
 2. Install dependencies:
+
    - **Backend**:
 
-        ```bash
-        python3 -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
-        ```
+     ```bash
+     python3 -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
+     ```
 
    - **Frontend**:
 
-        ```bash
-        pnpm install
-        ```
+     ```bash
+     pnpm install
+     ```
 
 3. Set up environment variables (create `.env` file and configure as needed).
 
 4. Run the backend:
 
-    ```bash
-    pnpm run fastapi-dev
-    ```
+   ```bash
+   pnpm run fastapi-dev
+   ```
 
 5. Run the frontend:
 
-    ```bash
-    pnpm run next-dev
-    ```
+   ```bash
+   pnpm run next-dev
+   ```
 
 6. Access the app at `http://localhost:3000`.
 
@@ -98,18 +97,6 @@ With features like contextual word definitions and a personalized vocabulary bui
 Live Demo: [https://screen-note-ai.vercel.app/](https://screen-note-ai.vercel.app/)
 
 ![demo gif](https://giaisadev.vercel.app/images/screen_note_ai_demo.gif)
-
----
-
-## 💻 Contributing
-
-We welcome contributions to Screen Note AI! Here’s how you can help:
-
-1. **Fork the repo** and clone it locally.
-2. **Make your changes** (please ensure tests are added or updated if applicable).
-3. **Create a pull request**, explaining the changes you made.
-
-We appreciate all contributions and will review them as quickly as possible!
 
 ---
 

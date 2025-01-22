@@ -1,3 +1,4 @@
+'use client';
 import type React from 'react';
 import {
   Card,
@@ -15,6 +16,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import type { WordDefinition, WordsState } from '@/stores/useWordsStore';
+import { usePathname } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 type WordCardsProps = {
   words: WordDefinition[];
@@ -22,8 +25,28 @@ type WordCardsProps = {
 };
 
 const WordCards = ({ words, setWords }: WordCardsProps) => {
-  const handleRemoveWord = (wordId: string) => {
-    setWords(words.filter((w) => w.id !== wordId));
+  const pathname = usePathname();
+  const supabase = createClient();
+
+  const handleRemoveWord = async (wordId: string) => {
+    try {
+      if (pathname.includes('/list')) {
+        const { error } = await supabase
+          .from('words')
+          .delete()
+          .eq('id', wordId);
+
+        if (error) {
+          console.error('Error deleting word:', error);
+        } else {
+          setWords(words.filter((w) => w.id !== wordId));
+        }
+      } else {
+        setWords(words.filter((w) => w.id !== wordId));
+      }
+    } catch (error) {
+      console.error('Error deleting word:', error);
+    }
   };
 
   return (

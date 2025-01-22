@@ -5,8 +5,7 @@ from typing import List
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 
-# Load the environment variables from .env.local
-load_dotenv('.env.local')
+load_dotenv('.env')
 
 hf_token = os.getenv('HUGGINGFACE_TOKEN')
 nvidia_token = os.getenv('NVIDIA_API_KEY')

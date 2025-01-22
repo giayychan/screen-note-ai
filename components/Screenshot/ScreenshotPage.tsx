@@ -6,10 +6,12 @@ import { UrlInput } from './UrlInput';
 import LoadingImageOverlay from '../ui/LoadingImageOverlay';
 import { WordOverlay } from './WordOverlay';
 import LoadingSection from './LoadingSection';
+import { usePathname } from 'next/navigation';
 
 export default function ScreenshotPage() {
   const ref = useRef<HTMLDivElement>(null);
   const containerWidth = ref?.current?.clientWidth;
+  const pathname = usePathname();
 
   const {
     base64Image,
@@ -45,12 +47,14 @@ export default function ScreenshotPage() {
   return (
     <div className="flex flex-col items-center w-full lg:w-[60vw]" ref={ref}>
       <div className="flex flex-col w-full gap-10 pb-2">
-        <UrlInput
-          onSubmit={onSubmit}
-          value={url}
-          onChange={handleUrlChange}
-          disabled={loadingScreenshot || loadingTexts}
-        />
+        {pathname === '/' && (
+          <UrlInput
+            onSubmit={onSubmit}
+            value={url}
+            onChange={handleUrlChange}
+            disabled={loadingScreenshot || loadingTexts || !url}
+          />
+        )}
         <div>
           {(loadingScreenshot || loadingTexts) && (
             <LoadingSection

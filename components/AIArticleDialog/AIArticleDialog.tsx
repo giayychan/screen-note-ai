@@ -3,7 +3,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogTrigger
 } from '@/components/ui/dialog';
 import { ReactNode, useState } from 'react';
 import { useStore } from 'zustand';
@@ -28,7 +29,7 @@ const AIArticleDialog = ({ children: trigger }: { children: ReactNode }) => {
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={isOpen}>
-      {trigger}
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-w-3xl overflow-scroll size-full">
         <DialogHeader>
           <DialogTitle>

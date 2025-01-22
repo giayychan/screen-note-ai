@@ -43,7 +43,7 @@ export async function renderScreenshotWithPuppeteer(
     );
     await page.evaluateOnNewDocument(preloadFile);
     await page.goto(url, {
-      waitUntil: 'networkidle2',
+      waitUntil: 'domcontentloaded',
       timeout: 60000
     });
     await cfCheck(page);

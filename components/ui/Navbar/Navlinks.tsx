@@ -18,24 +18,17 @@ export default function Navlinks({ user }: NavlinksProps) {
 
   return (
     <div className="relative flex flex-row justify-between py-4 align-center lg:py-6">
-      <div className="flex items-center flex-1">
+      <div className="flex items-center flex-1 text-white">
         <Link href="/" aria-label="Logo" className="flex items-center gap-2">
           <Logo />
-          <span className="hidden text-xl lg:block">ScreenNote AI</span>
+          <span className="hidden text-xl font-bold lg:block">
+            ScreenNote AI
+          </span>
         </Link>
-        <nav className="ml-6 space-x-2 lg:block">
-          {user && <Link href="/account">Account</Link>}
-        </nav>
       </div>
-      <div className="flex items-center justify-end pr-4 space-x-8">
-        {user ? (
-          <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
-            <input type="hidden" name="pathName" value={usePathname()} />
-            <Button type="submit">Sign out</Button>
-          </form>
-        ) : (
-          <Link href="/signin">Sign In</Link>
-        )}
+
+      <nav className="flex items-center justify-end pr-4 space-x-8 text-sm text-white">
+        {user && <Link href="/my-lists">My Lists</Link>}
         <Link
           target="_blank"
           rel="noopener noreferrer"
@@ -44,7 +37,15 @@ export default function Navlinks({ user }: NavlinksProps) {
         >
           Buy Me A Coffee
         </Link>
-      </div>
+        {user ? (
+          <form onSubmit={(e) => handleRequest(e, SignOut, router)}>
+            <input type="hidden" name="pathName" value={usePathname()} />
+            <Button type="submit">Sign out</Button>
+          </form>
+        ) : (
+          <Link href="/signin">Sign In</Link>
+        )}
+      </nav>
       <div>
         <ModeToggle />
       </div>
