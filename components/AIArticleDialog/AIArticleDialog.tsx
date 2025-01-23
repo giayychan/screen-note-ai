@@ -1,3 +1,10 @@
+import { ReactNode, useEffect, useState } from 'react';
+import { useStore } from 'zustand';
+import useWordsStore from '@/stores/useWordsStore';
+import useArticleGenerator from './hooks/useArticleGenerator';
+import useWordsWithColors from './hooks/useWordsWithColors';
+import WordList from './WordList';
+import ArticleContent from './ArticleContent';
 import {
   Dialog,
   DialogContent,
@@ -6,31 +13,34 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { ReactNode, useState } from 'react';
-import { useStore } from 'zustand';
-import useWordsStore from '@/stores/useWordsStore';
-import useArticleGenerator from './hooks/useArticleGenerator';
-import useWordsWithColors from './hooks/useWordsWithColors';
-import WordList from './WordList';
-import ArticleContent from './ArticleContent';
 
 const AIArticleDialog = ({ children: trigger }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasGeneratedArticle, setHasGeneratedArticle] = useState(false);
   const words = useStore(useWordsStore, (state) => state.words);
   const wordsWithColor = useWordsWithColors(words);
-  const { article, loading, generateAIArticle } = useArticleGenerator(
-    words.map((w) => w.text)
-  );
+  const wordTextList = words.map((w) => w.text);
+  const { article, loading, generateAIArticle } =
+    useArticleGenerator(wordTextList);
 
-  const handleOpenChange = async (open: boolean) => {
+  const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
-    if (open) await generateAIArticle();
   };
+
+  useEffect(() => {
+    if (isOpen && !hasGeneratedArticle && !loading) {
+      generateAIArticle()
+        .then(() => {
+          setHasGeneratedArticle(true);
+        })
+        .catch((error) => console.error('Error generating article:', error));
+    }
+  }, [isOpen, hasGeneratedArticle, generateAIArticle]);
 
   return (
     <Dialog onOpenChange={handleOpenChange} open={isOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-3xl overflow-scroll size-full">
+      <DialogContent className="max-w-3xl overflow-y-auto size-full">
         <DialogHeader>
           <DialogTitle>
             <p className="text-3xl">

@@ -1,14 +1,11 @@
-import json
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
 import os
-from typing import List
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 
 load_dotenv('.env')
 
 hf_token = os.getenv('HUGGINGFACE_TOKEN')
-nvidia_token = os.getenv('NVIDIA_API_KEY')
+model_name = "mistralai/Mistral-7B-Instruct-v0.3"
 
 
 def generate_word_dictionary(word, context):
@@ -35,7 +32,7 @@ def generate_word_dictionary(word, context):
     client = InferenceClient(token=hf_token)
 
     response = client.chat.completions.create(
-        model="mistralai/Mistral-7B-Instruct-v0.3",
+        model=model_name,
         messages=messages,
         response_format=response_format,
         max_tokens=8000
@@ -44,16 +41,32 @@ def generate_word_dictionary(word, context):
     return response.choices[0].message.content
 
 
-def article_generator(includingWords: List[str]):
-    print('Hello', nvidia_token)
-    client = ChatNVIDIA(
-        model="mistralai/mistral-7b-instruct-v0.3",
-        api_key=nvidia_token,
+def article_generator(prompt: str):
+    print(f"Prompt: {prompt}")
+
+    messages = [
+        {
+            "role": "user",
+            "content": prompt,
+        },
+    ]
+
+    client = InferenceClient(token=hf_token)
+
+    response = client.chat.completions.create(
+        model=model_name,
+        messages=messages,
     )
 
-    messages = [{"role": "user", "content": f"Write an article using words: \
-            {json.dumps(includingWords)}"}]
+    print(f"Response: {response.choices[0].message.content}")
 
-    for chunk in client.stream(messages):
-        print(chunk.content, end="")
-        yield chunk.content
+    article = response.choices[0].message.content
+
+    # Split by lines and preserve the newlines
+    for line in article.splitlines():
+        # Yield each word in the line
+        for word in line.split():
+            yield word + " "
+
+        # Yield a new line after each line of text
+        yield "\n"

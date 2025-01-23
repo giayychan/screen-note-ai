@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 
 const useArticleGenerator = (words: string[]) => {
   const [loading, setLoading] = useState(false);
   const [article, setArticle] = useState<string[]>([]);
 
-  const generateAIArticle = async () => {
+  const generateAIArticle = useCallback(async () => {
     try {
       setArticle([]);
       setLoading(true);
@@ -44,7 +44,7 @@ const useArticleGenerator = (words: string[]) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [words]);
 
   return { article, loading, generateAIArticle };
 };
