@@ -19,35 +19,42 @@
 
 ## 🚀 Overview
 
-The Dynamic Learning App is an innovative tool designed to transform how users engage with and learn from digital content. By integrating advanced AI technologies and Optical Character Recognition (OCR), the app enables users to extract text from websites effortlessly and interact with it dynamically.
+The Dynamic Learning App is here to change how you learn from online articles. With advanced Optical Character Recognition (OCR) and AI, the app makes it easy to capture text from websites and interact with it in real-time.
 
-With features like contextual word definitions and a personalized vocabulary builder, it empowers users to enhance their language skills and comprehension. The app also incorporates AI-powered content creation, allowing users to generate custom articles using their saved word lists. Perfect for students, professionals, and content creators, this app bridges the gap between learning, productivity, and creativity.
+You can click on any word in the text to see a definition tailored to its context, helping you learn more effectively. Plus, the vocabulary builder lets you save words you want to remember, and you can easily add or remove them as you go.
+
+To top it off, the app can create personalized articles using the words you’ve saved, turning your learning into something practical and creative. Whether you’re a student, a professional, or just love exploring new content, this app turns reading into an interactive learning experience that boosts your language skills and sparks your creativity.
 
 ---
 
 ## 🌟 Key Features
 
-1. **Text Extraction with OCR**: Easily capture text from websites using state-of-the-art Optical Character Recognition.
-2. **Contextual Definitions**: Click any word for an AI-tailored definition contextual to the text.
-3. **Vocabulary Builder**: Save words into a personal list for tracking or learning.
-4. **AI-Powered Content Creation**: Use your word list to generate relevant, high-quality AI-powered articles.
+1. **Text Extraction with OCR**: Effortlessly capture text from online articles by simply pasting the URL. The app automatically takes a screenshot and extracts the text using cutting-edge Optical Character Recognition (OCR) technology.
+2. **Contextual AI-Powered Word Definitions**: Click on any word within the extracted text, and get an instant, AI-generated definition that’s tailored to the context of the article, providing deeper understanding and nuanced meanings.
+3. **Personalized Vocabulary Builder**: Easily save new words to your personal word list for future reference. Track and manage your vocabulary to facilitate long-term retention and mastery.
+4. **AI-Generated Content Creation**: Utilize your saved word list to generate high-quality AI-written articles. Let the app create meaningful content that integrates the vocabulary you’ve learned for practice and application.
 
 ---
 
 ## 🛠️ Technologies Used
 
 - **AI Technologies**: Hugging Face, MistralAI
-- **OCR Processing**: Python OCR
+- **OCR Processing**: Tesseract.js
 - **Web Frameworks**: Next.js (Frontend), FastAPI (Backend)
-- **Hardware Acceleration**: NVIDIA GPUs
+- **Authentication**: Supabase for authentication
+- **Database**: PostgreSQL relational database for storing user data
+- **Hosting**: Vercel for deployment and hosting
+- **Data Compression**: LZ-string for compressing OCR data in localStorage for faster retrieval
+- **Web Scraping**: Puppeteer for taking screenshots of articles
+- **State Management**: Zustand for managing application state
 
 ---
 
 ## 🎯 Use Cases
 
 - **Educational Tool**: Enhance learning with contextual vocabulary and AI article creation.
-- **Content Creators**: Generate drafts for blog posts or essays with minimal effort.
 - **Language Learners**: Simplify vocabulary building by seamlessly saving and analyzing new words.
+- **Content Creators**: Generate drafts for blog posts or essays with minimal effort.
 
 ---
 
@@ -65,7 +72,7 @@ With features like contextual word definitions and a personalized vocabulary bui
    - **Backend**:
 
      ```bash
-     python3 -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
+     python3.12 -m venv .venv && source venv/bin/activate && pip3 install -r requirements.txt
      ```
 
    - **Frontend**:
@@ -88,7 +95,13 @@ With features like contextual word definitions and a personalized vocabulary bui
    pnpm run next-dev
    ```
 
-6. Access the app at `http://localhost:3000`.
+6. Run the database locally:
+
+   ```bash
+   pnpm run supabase:start
+   ```
+
+7. Access the app at `http://localhost:3000`.
 
 ---
 
@@ -112,7 +125,7 @@ Your support will help keep this project alive and improve its features!
 
 ## 📝 Feature Request
 
-We’re always looking to improve the app! If you have any ideas or suggestions for new features, feel free to open an issue on GitHub or submit a request:
+We’re always looking to improve the app! If you have any ideas or suggestions for new features, feel free to open an issue on GitHub or drop me a message:
 
 - **Submit Feature Request**: [Feature Request Link](https://github.com/Giayychan/screen-note-ai/issues)
 
