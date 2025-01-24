@@ -13,6 +13,8 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const AIArticleDialog = ({ children: trigger }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +24,17 @@ const AIArticleDialog = ({ children: trigger }: { children: ReactNode }) => {
   const wordTextList = words.map((w) => w.text);
   const { article, loading, generateAIArticle } =
     useArticleGenerator(wordTextList);
+  const supabase = createClient();
+  const router = useRouter();
 
-  const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = async (open: boolean) => {
+    const res = await supabase.auth.getUser();
+    const user = res.data.user;
+
+    if (!user) {
+      router.push('/signin');
+      return;
+    }
     setIsOpen(open);
   };
 
