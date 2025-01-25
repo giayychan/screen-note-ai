@@ -17,9 +17,10 @@ const CreateListDialog = ({
   createList
 }: {
   children: ReactNode;
-  createList: (listName: string) => Promise<void>;
+  createList: (listName: string) => Promise<string | undefined>;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [listName, setListName] = useState('');
   const supabase = createClient();
   const router = useRouter();
@@ -38,10 +39,26 @@ const CreateListDialog = ({
 
   const submitCreateList = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!listName) {
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      await createList(listName);
+      const listId = await createList(listName);
+
+      if (!listId) {
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(false);
+      router.push(`/list/${listId}`);
       setIsOpen(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -60,7 +77,9 @@ const CreateListDialog = ({
               onChange={(e) => setListName(e.target.value)}
             />
             <div className="flex flex-row gap-4">
-              <Button type="submit">Confirm</Button>
+              <Button type="submit" loading={isLoading} disabled={!listName}>
+                Confirm
+              </Button>
               <Button variant="outline" onClick={() => setIsOpen(false)}>
                 Cancel
               </Button>

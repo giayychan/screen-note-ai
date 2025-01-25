@@ -65,7 +65,7 @@ const WordList = ({ words }: WordListProps) => {
         setWords([]);
         reset();
 
-        router.push(`/list/${listId}`);
+        return listId;
       }
     } catch (error) {
       console.log(error);

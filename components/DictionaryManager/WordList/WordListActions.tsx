@@ -6,7 +6,7 @@ import CreateListDialog from './CreateListDialog';
 import { usePathname } from 'next/navigation';
 
 type WordListActionsProps = {
-  onSaveList: (listName: string) => Promise<void>;
+  onSaveList: (listName: string) => Promise<string | undefined>;
   onClearList: () => void;
 };
 
