@@ -29,6 +29,12 @@ const storage = createJSONStorage<ScreenshotState>(() => localStorage, {
 
       return value;
     }
+
+    if (key === 'base64Image' && typeof value === 'string') {
+        const newValue = decompress(value)
+        return newValue;
+    }
+
     return value;
   },
   replacer: (key, value) => {
@@ -38,6 +44,11 @@ const storage = createJSONStorage<ScreenshotState>(() => localStorage, {
         return newValue;
       }
       return value;
+    }
+    
+    if (key === 'base64Image' && typeof value === 'string') {
+        const newValue = compress(value);
+        return newValue;
     }
     return value;
   }

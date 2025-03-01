@@ -28,7 +28,7 @@ export function useScreenshot(containerWidth?: number) {
       const imageWidth =
         containerWidth || window?.innerWidth * SCREENSHOT_WIDTH_PERCENTAGE;
       const image = await fetchScreenshot(url, imageWidth);
-      setBase64Image(image || '');
+      setBase64Image(image);
     } catch (error) {
       console.error('Error fetching screenshot:', error);
     } finally {

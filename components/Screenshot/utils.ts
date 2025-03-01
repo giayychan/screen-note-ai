@@ -30,7 +30,8 @@ export const extractTextFromImage = async (
   const dimensions = await getImageDimensions(base64Image);
   const { data } = await recognize(base64Image, 'eng', {
     logger: (m) => {
-      if (m.status === 'recognizing text') setProgress(m.progress * 100);
+      // minus 1 to prevent 100% progress and finish the process when the words are reduced
+      if (m.status === 'recognizing text') setProgress(m.progress * 100 - 1);
     }
   });
 
@@ -58,7 +59,8 @@ export const extractTextFromImage = async (
     }
     return acc;
   }, []);
-
+  
+  setProgress(100);
   return storageOcrWords;
 };
 
