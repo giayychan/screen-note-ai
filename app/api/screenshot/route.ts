@@ -8,7 +8,7 @@ type PostRequestBody = {
 
 export const maxDuration = 60;
 
-const cache = new Map<string, { timestamp: number, data: Uint8Array<ArrayBufferLike> }>();
+const cache = new Map<string, { timestamp: number, data: Uint8Array }>();
 const CACHE_TTL = 3600 * 1000 * 4; // 4 hours
 
 export async function POST(request: Request) {
