@@ -9,7 +9,7 @@ type PostRequestBody = {
 export const maxDuration = 60;
 
 const cache = new Map<string, { timestamp: number, data: Uint8Array }>();
-const CACHE_TTL = 3600 * 1000 * 4; // 4 hours
+const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
 
 export async function POST(request: Request) {
   try {
@@ -41,8 +41,9 @@ export async function POST(request: Request) {
       return new Response(cachedItem.data, {
         headers: {
           'Content-Type': 'image/jpeg',
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-          'X-Cache': 'HIT'
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+          'CDN-Cache-Control': 'public, s-maxage=14400, stale-while-revalidate=86400',
+          'Vercel-CDN-Cache-Control': 'public, s-maxage=14400, stale-while-revalidate=86400'
         }
       });
     }
