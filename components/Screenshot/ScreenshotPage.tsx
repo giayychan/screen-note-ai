@@ -18,7 +18,8 @@ export default function ScreenshotPage() {
     loading: loadingScreenshot,
     fetchImage,
     url,
-    setUrl
+    setUrl,
+    reset
   } = useScreenshot(containerWidth);
 
   const {
@@ -53,6 +54,7 @@ export default function ScreenshotPage() {
             value={url}
             onChange={handleUrlChange}
             disabled={loadingScreenshot || loadingTexts || !url}
+            reset={reset}
           />
         )}
         <div>

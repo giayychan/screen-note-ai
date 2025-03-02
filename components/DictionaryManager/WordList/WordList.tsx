@@ -92,21 +92,12 @@ const WordList = ({ words }: WordListProps) => {
     }
   };
 
-  return (
-    <>
-      {words.length > 0 ? (
-        <div className="lg:top-0 lg:sticky lg:h-screen lg:overflow-y-auto">
-          <WordListActions onSaveList={saveList} onClearList={clearList} />
-          <WordCards words={words} setWords={setWords} />
-        </div>
-      ) : (
-        <div className="px-5 pb-10 text-center">
-          No word in the list yet. <br />
-          Click on the word in the screenshot to save.
-        </div>
-      )}
-    </>
-  );
+  return words.length > 0 ? (
+    <div className="lg:top-0 lg:sticky lg:h-screen lg:overflow-y-auto">
+      <WordListActions onSaveList={saveList} onClearList={clearList} />
+      <WordCards words={words} setWords={setWords} />
+    </div>
+  ) : null;
 };
 
 export default WordList;

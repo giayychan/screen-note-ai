@@ -20,6 +20,7 @@ export function useScreenshot(containerWidth?: number) {
   );
   const url = useStore(useScreenshotStore, (state) => state.url);
   const setUrl = useStore(useScreenshotStore, (state) => state.setUrl);
+  const reset = useStore(useScreenshotStore, (state) => state.reset);
 
   const fetchImage = async (url: string) => {
     try {
@@ -41,7 +42,8 @@ export function useScreenshot(containerWidth?: number) {
     loading,
     fetchImage,
     setUrl,
-    url
+    url,
+    reset
   };
 }
 

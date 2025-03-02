@@ -6,12 +6,14 @@ export const UrlInput = ({
   onSubmit,
   value = '',
   onChange,
-  disabled
+  disabled,
+  reset
 }: {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   disabled: boolean;
+  reset: () => void;
 }) => {
   return (
     <form onSubmit={onSubmit}>
@@ -27,9 +29,14 @@ export const UrlInput = ({
           onChange={onChange}
           value={value}
         />
-        <Button type="submit" disabled={disabled}>
-          Render
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button type="submit" disabled={disabled}>
+            Render
+          </Button>
+          <Button variant="secondary" onClick={reset} disabled={disabled}>
+            Clear
+          </Button>
+        </div>
       </div>
     </form>
   );

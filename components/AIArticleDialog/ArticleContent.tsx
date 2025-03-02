@@ -17,7 +17,7 @@ const ArticleContent = ({
   }, [article]);
 
   return (
-    <span className="md:text-lg whitespace-break-spaces">
+    <span className="text-black dark:text-white md:text-lg whitespace-break-spaces ">
       {article.map((a, i) => {
         const wordInList = wordsWithColor.find((w) => {
           return (
