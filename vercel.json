@@ -3,5 +3,14 @@
     "api/**": {
       "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
     }
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "hooks": {
+    "build": "pnpm run test && pnpm run build"
   }
 }

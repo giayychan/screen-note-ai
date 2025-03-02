@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 from pydantic import BaseModel
-from ..model import generate_word_dictionary
+from ..huggingface_inference import generate_word_dictionary
 
 router = APIRouter(prefix="/ai_dictionary", tags=["ai_dictionary"])
 

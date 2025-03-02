@@ -7,6 +7,8 @@
     "lint": "next lint",
     "fastapi-dev": "python3 -m venv .venv && source .venv/bin/activate && pip3 install -r requirements.txt && python3 -m uvicorn api.python.fastapi.index:app --reload --log-level debug",
     "dev": "concurrently \"pnpm run next-dev\" \"pnpm run fastapi-dev\"",
+    "test": "pnpm run test:fastapi",
+    "test:fastapi": "source .venv/bin/activate && python3 -m pytest api/python/fastapi/tests",
     "prettier-fix": "prettier --write .",
     "stripe:login": "stripe login",
     "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks",
