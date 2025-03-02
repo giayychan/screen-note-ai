@@ -5,8 +5,16 @@ import axios from 'axios';
 export const SCREENSHOT_WIDTH_PERCENTAGE = 60 / 100;
 export const CONFIDENCE_THRESHOLD = 40;
 
+const imageCache = new Map<string, { base64Image: string; ocrWords?: OcrWord[]}>();
+
 export const fetchScreenshot = async (url: string, screenshotWidth: number) => {
   try {
+    const cacheKey = `${url}:${screenshotWidth}`;
+
+    if (imageCache.has(cacheKey)) {
+      return imageCache.get(cacheKey)?.base64Image || '';
+    }
+
     const response = await axios.post(
       '/api/screenshot',
       { url, screenshotWidth },
@@ -16,7 +24,12 @@ export const fetchScreenshot = async (url: string, screenshotWidth: number) => {
     );
 
     const encoded = Buffer.from(response.data, 'binary').toString('base64');
-    return `data:image/jpeg;base64,${encoded}`;
+
+    const imgBase64 = `data:image/jpeg;base64,${encoded}`;
+
+    imageCache.set(cacheKey, {base64Image: imgBase64});
+
+    return imgBase64;
   } catch (error) {
     console.error('Failed to fetch screenshot:', error);
     throw new Error('Failed to fetch screenshot');
@@ -27,6 +40,11 @@ export const extractTextFromImage = async (
   base64Image: string,
   setProgress: (value: number) => void
 ): Promise<OcrWord[]> => {
+  const cached = imageCache.values().find((v) => v.base64Image === base64Image)
+  if (cached && cached.ocrWords?.length) {
+    return cached.ocrWords;
+  }
+
   const dimensions = await getImageDimensions(base64Image);
   const { data } = await recognize(base64Image, 'eng', {
     logger: (m) => {
@@ -61,6 +79,10 @@ export const extractTextFromImage = async (
   }, []);
   
   setProgress(100);
+
+  if (cached) {
+    cached.ocrWords = storageOcrWords;
+  }
   return storageOcrWords;
 };
 
